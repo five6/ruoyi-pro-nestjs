@@ -1,0 +1,21 @@
+version: '1.0.0'
+
+services:
+  nestruoyi:
+    container_name: nestruoyi
+    build:
+      context: .
+    ports:
+      - 7000:7000
+  
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+      - 3306:3306
