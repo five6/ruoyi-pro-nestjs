@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "local",
+			"problemMatcher": [],
+			"label": "npm: local",
+			"detail": "cross-env NODE_ENV=local nest start --watch"
+		}
+	]
+}

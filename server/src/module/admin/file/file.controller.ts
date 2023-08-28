@@ -1,0 +1,55 @@
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Request,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+
+import { Config } from '../../../common/config/config';
+import { Pagination } from '../../../common/result-beans/Pagination';
+import { BufferedFile } from '../../../common/model/files.model';
+import { FileService } from '../../../service/file/file.service';
+import { Keep } from '../../../common/decorators/keep.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { PageDto } from 'src/dto/commonDto';
+import { FilePageDto } from 'src/dto/file/FileDto';
+
+@ApiTags('文件')
+@Controller(`${Config.ADMIN_API_PREFIX}/file`)
+export class FilesController {
+  constructor(private service: FileService) {}
+
+  @ApiOperation({ summary: '获取文件列表' })
+  @Get('page')
+  async find(@Query() pageDto: FilePageDto) {
+    const fields = '';
+    const result = await this.service.find(pageDto);
+    return {
+      list: result[0],
+      total: result[1],
+    };
+  }
+
+  @ApiOperation({ summary: '上传文件' })
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async upload(@UploadedFile() file: BufferedFile, @Request() request) {
+    return await this.service.upload(file);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: '删除' })
+  @ApiParam({ name: 'id' })
+  async delete(@Param('id') id) {
+    await this.service.delete(id).catch((err) => {
+      throw err;
+    });
+    return '删除成功';
+  }
+}

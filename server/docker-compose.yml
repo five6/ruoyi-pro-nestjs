@@ -1,0 +1,21 @@
+version: '1.0.0'
+
+services:
+  ruoyinestjs:
+    container_name: ruoyinestjs
+    build:
+      context: .
+    ports:
+      - 7000:7000
+  
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017

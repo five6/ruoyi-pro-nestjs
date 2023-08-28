@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script>
+      const options = {
+        headers: {
+          Authorization: 'Bearer abcdefgxxxxx',
+        },
+      };
+      const socket = new WebSocket('ws://localhost:8000', options);
+      socket.onopen = function () {
+        console.log('Connected');
+        socket.send(
+          JSON.stringify({
+            event: 'events',
+            query: { token: 'aaaa' },
+            data: "I'm events's data",
+          }),
+        );
+
+        socket.send(
+          JSON.stringify({
+            event: 'game_start',
+            query: { token: 'aaaa' },
+            data: 'game has started',
+          }),
+        );
+
+        socket.onmessage = function (data) {
+          console.log(data);
+        };
+      };
+    </script>
+  </head>
+
+  <body></body>
+</html>
