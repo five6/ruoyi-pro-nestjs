@@ -37,6 +37,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (authorization) {
       const token = authorization.split(' ')[1];
       const payload: any = this.jwtService.decode(token);
+      if (!payload) {
+        throw new UnauthorizedException(errors.ILLEGAL_TOKEN);
+      }
       try {
         let redis_token = null;
         if (this.configService.get('SINGLE_CLIENT_ONLINE') === 'true') {
